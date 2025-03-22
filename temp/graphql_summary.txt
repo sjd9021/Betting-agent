@@ -1,0 +1,399 @@
+Request #1: allFeatureStates
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #2: CheckLoggedIn
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #3: GetLoyaltySportsCalculator
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #4: GetSportProviderIds
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "provider": "SPORT_PROVIDER_OPENTAG"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #5: activeFreeBetPlayerBonuses
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "sportProvider": "SPORT_PROVIDER_OPENTAG"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #6: listQuickLinks
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {}
+}
+--------------------------------------------------------------------------------
+
+Request #7: listContentCards
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #8: listWidgetSports
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "widgetType": "WIDGET_TYPE_LIVE_HIGHLIGHTS"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #9: listWidgetSports
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "widgetType": "WIDGET_TYPE_POPULAR_EVENTS"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #10: listWidgetSports
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "widgetType": "WIDGET_TYPE_UPCOMING_EVENTS"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #11: openBetsCount
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "playerId": "e66e21ed-b736-4f5c-ac59-cb3d07a05037"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #12: predefinedStakesPerPlayer
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #13: predefinedStakes
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "currency": "USD"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #14: minStake
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "currency": "USD"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #15: maxStake
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "currency": "USD"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #16: GetLoyaltyStaticContent
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #17: GetCmsPage
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "url": "/sports/",
+  "version": null
+}
+--------------------------------------------------------------------------------
+
+Request #18: predefinedStakes
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "currency": "INR"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #19: minStake
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "currency": "INR"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #20: maxStake
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "currency": "INR"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #21: PlayerProfile
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #22: CheckUserHasLiveStreamPermission
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #23: playerInfo
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #24: GetMiniGames
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #25: GetOpenBetsCount
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #26: Viewer
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #27: listBonusWallets
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #28: currencyRates
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "playerCurrency": "INR"
+}
+--------------------------------------------------------------------------------
+
+Request #29: listWidgetEvents
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "sportId": "51ba17ce-bf66-352f-a3bc-1e8984e1d4a7",
+    "widgetType": "WIDGET_TYPE_UPCOMING_EVENTS"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #30: listWidgetEvents
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "sportId": "51ba17ce-bf66-352f-a3bc-1e8984e1d4a7",
+    "widgetType": "WIDGET_TYPE_LIVE_HIGHLIGHTS"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #31: listWidgetEvents
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "sportId": "51ba17ce-bf66-352f-a3bc-1e8984e1d4a7",
+    "widgetType": "WIDGET_TYPE_POPULAR_EVENTS"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #32: UserCurrency
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #33: GetActiveFreeBets
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #34: cookiesConsent
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #35: PlayerChatInfo
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "includeLegacyPlatformStats": true,
+  "shouldIncludeLoyaltyData": true
+}
+--------------------------------------------------------------------------------
+
+Request #36: ZendeskJWT
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #37: getPlayerSportsLevel
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #38: PlayerProfile
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #39: listActiveMarketFilters
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "sportId": "51ba17ce-bf66-352f-a3bc-1e8984e1d4a7",
+    "eventIds": [
+      "30c7376c-fd1a-3837-98ce-7228938b7564",
+      "2ea4a033-b8ca-39f7-97f2-9744eb8b03d9",
+      "28ced45a-3d0c-32ae-9c5a-3760f32f2f65",
+      "5f1d768d-fd3e-3a38-a6fd-9b1bffc81dc0",
+      "2c21f8a2-2fe7-3b8f-8c14-aa4e53fde082",
+      "561e6240-4583-33ee-8154-97a3aefb81fe",
+      "bfeabcf7-1077-34f6-9b35-fbc1b0931c6d"
+    ]
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #40: listActiveMarketFilters
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "sportId": "51ba17ce-bf66-352f-a3bc-1e8984e1d4a7",
+    "eventIds": [
+      "c3663cfb-7c4a-36bf-b982-0a639da33979",
+      "1bae9468-5b5f-3fc3-9d89-31f71f0fb548",
+      "8a2638bb-e3f6-3c04-8e94-4fc53d2e7904",
+      "0e787d1b-6e4d-328c-9a0b-4500401e8268",
+      "26a3efe7-3cc3-3de2-a050-89563b363d0e",
+      "0f4e3f74-466b-39fc-ad9e-3e562cd9f450"
+    ]
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #41: listActiveMarketFilters
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "sportId": "51ba17ce-bf66-352f-a3bc-1e8984e1d4a7",
+    "eventIds": [
+      "814176aa-0388-3166-bb54-08fb83020b56",
+      "01f9f6e3-b53f-3dcc-966d-12740ee5ae7d",
+      "3f1afc68-a19f-309b-837a-e32ad565ee9d",
+      "cf27dbc5-2269-334f-993f-694ded1c64d3",
+      "dcb9dfc4-0deb-3476-b9bb-fcecc641ca2a"
+    ]
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #42: currencyRates
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "playerCurrency": "INR"
+}
+--------------------------------------------------------------------------------
+
+Request #43: getBalanceAlertSettings
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #44: AppBannerNotification
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #45: getReadyToClaimPlayerPromotions
+URL: https://www.my10cric.com/graphql
+Variables: {}
+--------------------------------------------------------------------------------
+
+Request #46: listSports
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "eventType": "ALL"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #47: lazyEvent
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "eventId": "c3663cfb-7c4a-36bf-b982-0a639da33979"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #48: marketSort
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "sportId": "51ba17ce-bf66-352f-a3bc-1e8984e1d4a7"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #49: GetCmsPage
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "url": "/cricket/csa-4-day-series/dolphins-north-west-dragons-20032025/",
+  "version": null
+}
+--------------------------------------------------------------------------------
+
+Request #50: listMarketFamilies
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "eventId": "c3663cfb-7c4a-36bf-b982-0a639da33979"
+  }
+}
+--------------------------------------------------------------------------------
+
+Request #51: markets
+URL: https://www.my10cric.com/graphql
+Variables: {
+  "payload": {
+    "eventId": "c3663cfb-7c4a-36bf-b982-0a639da33979",
+    "marketIds": [
+      "7252f076-0869-32b1-9978-65b11887f4f1",
+      "84b0e625-7fae-35b0-88ef-aa80070e01bb",
+      "b556c7f2-7db2-3d6d-8f80-9f87403f3195",
+      "2465eaa4-aca1-3036-9685-9941a3834c78",
+      "4bca9904-fd35-3c5f-b17f-406a11de20fd",
+      "9138b7dc-f1d1-311b-8d23-39baec69957c",
+      "55b24630-0b29-36b3-a90f-e816707c31c3",
+      "d7e8e7ed-9b8f-3fd8-9f3a-43b8e6e68f15"
+    ]
+  }
+}
+--------------------------------------------------------------------------------
+

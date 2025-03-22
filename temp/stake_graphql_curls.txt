@@ -1,0 +1,571 @@
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  --data-raw '{"query":"query FixtureIndexGroups($fixture: String!) {\n  slugFixture(fixture: $fixture) {\n    id\n    groups {\n      id\n      ...SportGroup\n    }\n    maps: groups(groups: [\"maps\"]) {\n      id\n      ...SportGroup\n      templates(includeEmpty: false) {\n        id\n        extId\n        markets {\n          status\n          specifiers\n          extId\n        }\n      }\n    }\n  }\n}\n\nfragment SportGroup on SportGroup {\n  name\n  translation\n  rank\n}\n","variables":{"fixture":"45157223-chennai-super-kings-mumbai-indians","fixtureId":"7fc2a75d-d7fd-433d-a08d-d9318f33c383","provider":"betradar","groups":["main"]}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetFeatureFlagDetails' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetFeatureFlagDetails($name: FlagNameEnum!) {\n  featureFlag(name: $name) {\n    id\n    config {\n      ... on BooleanFlagConfig {\n        enabled\n        type\n      }\n    }\n    name\n    ...FeatureFlagFragment\n  }\n}\n\nfragment FeatureFlagFragment on FeatureFlag {\n  id\n  name\n  createdAt\n  config {\n    ... on AgeVerificationFlagConfig {\n      minAge\n      enabled\n      type\n    }\n    ... on AddressVerificationFlagConfig {\n      bannedCountries\n      bannedStates\n      enabled\n      type\n    }\n    ... on DocumentVerificationFlagConfig {\n      provider\n      enabled\n      type\n    }\n    ... on RiskVerificationFlagConfig {\n      allowPoliticallyExposedPersons\n      allowThirdPartyAccounts\n      enabled\n      type\n    }\n    ... on PlaySessionFlagConfig {\n      expiryTime\n      enabled\n      type\n    }\n    ... on EvolutionOssProviderFlagConfig {\n      types\n      providers\n      enabled\n      type\n    }\n    ... on BiometricVerificationFlagConfig {\n      integration\n      enabled\n      type\n    }\n    ... on BooleanFlagConfig {\n      enabled\n      type\n    }\n    ... on BreezeFlagConfig {\n      enabled\n      type\n      onRampEnabled\n      offRampEnabled\n    }\n    ... on TransactionEligibilityFlagConfig {\n      enabled\n      cryptoDeposits\n      cryptoWithdrawals\n      fiatDeposits\n      fiatWithdrawals\n      type\n    }\n    ... on CashierNameMatchConfig {\n      type\n      cashierNameMatchProviders\n      closedBetaUsers\n      closedBeta\n      enabled\n      matchThreshold\n    }\n    ... on SweepsPaymentAccountManagerConfig {\n      enabled\n      type\n      enforced\n    }\n    ... on SbKinesisFlagConfig {\n      type\n      enabled\n      rbInactiveBet\n      rbInactiveBetEvent\n      rbInactiveBetOutcome\n      sbInactiveBet\n      sbInactiveBetEvent\n      sbInactiveBetOutcome\n    }\n    ... on FiatPaymentsFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on WorldpayFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on StakeOriginalsHttpFlagConfig {\n      type\n      enabled\n      games\n    }\n  }\n  __typename\n}\n","variables":{"name":"onboarding_flow_changes_flag"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetFeatureFlagDetails' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetFeatureFlagDetails($name: FlagNameEnum!) {\n  featureFlag(name: $name) {\n    id\n    config {\n      ... on BooleanFlagConfig {\n        enabled\n        type\n      }\n    }\n    name\n    ...FeatureFlagFragment\n  }\n}\n\nfragment FeatureFlagFragment on FeatureFlag {\n  id\n  name\n  createdAt\n  config {\n    ... on AgeVerificationFlagConfig {\n      minAge\n      enabled\n      type\n    }\n    ... on AddressVerificationFlagConfig {\n      bannedCountries\n      bannedStates\n      enabled\n      type\n    }\n    ... on DocumentVerificationFlagConfig {\n      provider\n      enabled\n      type\n    }\n    ... on RiskVerificationFlagConfig {\n      allowPoliticallyExposedPersons\n      allowThirdPartyAccounts\n      enabled\n      type\n    }\n    ... on PlaySessionFlagConfig {\n      expiryTime\n      enabled\n      type\n    }\n    ... on EvolutionOssProviderFlagConfig {\n      types\n      providers\n      enabled\n      type\n    }\n    ... on BiometricVerificationFlagConfig {\n      integration\n      enabled\n      type\n    }\n    ... on BooleanFlagConfig {\n      enabled\n      type\n    }\n    ... on BreezeFlagConfig {\n      enabled\n      type\n      onRampEnabled\n      offRampEnabled\n    }\n    ... on TransactionEligibilityFlagConfig {\n      enabled\n      cryptoDeposits\n      cryptoWithdrawals\n      fiatDeposits\n      fiatWithdrawals\n      type\n    }\n    ... on CashierNameMatchConfig {\n      type\n      cashierNameMatchProviders\n      closedBetaUsers\n      closedBeta\n      enabled\n      matchThreshold\n    }\n    ... on SweepsPaymentAccountManagerConfig {\n      enabled\n      type\n      enforced\n    }\n    ... on SbKinesisFlagConfig {\n      type\n      enabled\n      rbInactiveBet\n      rbInactiveBetEvent\n      rbInactiveBetOutcome\n      sbInactiveBet\n      sbInactiveBetEvent\n      sbInactiveBetOutcome\n    }\n    ... on FiatPaymentsFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on WorldpayFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on StakeOriginalsHttpFlagConfig {\n      type\n      enabled\n      games\n    }\n  }\n  __typename\n}\n","variables":{"name":"transaction_eligibility_turkish_requirements_flag"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetCricketScorecard' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetCricketScorecard($extId: String!) {\n  cricketScoreCard(extId: $extId) {\n    ...fragment\n  }\n}\n\nfragment fragment on SportCricketScoreCard {\n  name\n  overs {\n    balls\n    isCurrentOver\n    overNumber\n    runs\n  }\n  team1\n  team2\n  commentry\n  competition\n  status\n  scheduledStart\n  currentInningsNumber\n  innings {\n    teamName\n    inningsNumber\n    overs\n    runs\n    wickets\n    batsMen {\n      active\n      playerName\n      balls\n      runs\n      onStrike\n    }\n    bowlers {\n      balls\n      isActiveBowler\n      overs\n      playerName\n      runs\n      wickets\n    }\n  }\n}\n","variables":{"extId":"sr:match:58145085"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetFeatureFlagDetails' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetFeatureFlagDetails($name: FlagNameEnum!) {\n  featureFlag(name: $name) {\n    id\n    config {\n      ... on BooleanFlagConfig {\n        enabled\n        type\n      }\n    }\n    name\n    ...FeatureFlagFragment\n  }\n}\n\nfragment FeatureFlagFragment on FeatureFlag {\n  id\n  name\n  createdAt\n  config {\n    ... on AgeVerificationFlagConfig {\n      minAge\n      enabled\n      type\n    }\n    ... on AddressVerificationFlagConfig {\n      bannedCountries\n      bannedStates\n      enabled\n      type\n    }\n    ... on DocumentVerificationFlagConfig {\n      provider\n      enabled\n      type\n    }\n    ... on RiskVerificationFlagConfig {\n      allowPoliticallyExposedPersons\n      allowThirdPartyAccounts\n      enabled\n      type\n    }\n    ... on PlaySessionFlagConfig {\n      expiryTime\n      enabled\n      type\n    }\n    ... on EvolutionOssProviderFlagConfig {\n      types\n      providers\n      enabled\n      type\n    }\n    ... on BiometricVerificationFlagConfig {\n      integration\n      enabled\n      type\n    }\n    ... on BooleanFlagConfig {\n      enabled\n      type\n    }\n    ... on BreezeFlagConfig {\n      enabled\n      type\n      onRampEnabled\n      offRampEnabled\n    }\n    ... on TransactionEligibilityFlagConfig {\n      enabled\n      cryptoDeposits\n      cryptoWithdrawals\n      fiatDeposits\n      fiatWithdrawals\n      type\n    }\n    ... on CashierNameMatchConfig {\n      type\n      cashierNameMatchProviders\n      closedBetaUsers\n      closedBeta\n      enabled\n      matchThreshold\n    }\n    ... on SweepsPaymentAccountManagerConfig {\n      enabled\n      type\n      enforced\n    }\n    ... on SbKinesisFlagConfig {\n      type\n      enabled\n      rbInactiveBet\n      rbInactiveBetEvent\n      rbInactiveBetOutcome\n      sbInactiveBet\n      sbInactiveBetEvent\n      sbInactiveBetOutcome\n    }\n    ... on FiatPaymentsFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on WorldpayFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on StakeOriginalsHttpFlagConfig {\n      type\n      enabled\n      games\n    }\n  }\n  __typename\n}\n","variables":{"name":"responsible_gambling_flag"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: SportBet_SportMarketOutcome' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query SportBet_SportMarketOutcome($outcomeId: String!, $provider: SportsbookOddsProviderEnum!) {\n  sportMarketOutcome(outcomeId: $outcomeId, provider: $provider) {\n    id\n    name\n    odds\n    market {\n      id\n      name\n      status\n      provider\n      fixture {\n        id\n        slug\n        status\n        tournament {\n          slug\n          category {\n            slug\n            sport {\n              slug\n            }\n          }\n        }\n        data {\n          __typename\n          ... on SportFixtureDataMatch {\n            startTime\n            competitors {\n              name\n            }\n          }\n          ... on SportFixtureDataOutright {\n            startTime\n            name\n          }\n        }\n      }\n    }\n  }\n}\n","variables":{"outcomeId":"2365bf54-b55f-4929-9bec-2b9205f13a37","provider":"betradar"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: SportsMinBet' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query SportsMinBet {\n  info {\n    currencies {\n      name\n      sportBetMin {\n        value\n      }\n    }\n  }\n}\n","variables":{}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetCricketScorecard' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetCricketScorecard($extId: String!) {\n  cricketScoreCard(extId: $extId) {\n    ...fragment\n  }\n}\n\nfragment fragment on SportCricketScoreCard {\n  name\n  overs {\n    balls\n    isCurrentOver\n    overNumber\n    runs\n  }\n  team1\n  team2\n  commentry\n  competition\n  status\n  scheduledStart\n  currentInningsNumber\n  innings {\n    teamName\n    inningsNumber\n    overs\n    runs\n    wickets\n    batsMen {\n      active\n      playerName\n      balls\n      runs\n      onStrike\n    }\n    bowlers {\n      balls\n      isActiveBowler\n      overs\n      playerName\n      runs\n      wickets\n    }\n  }\n}\n","variables":{"extId":"sr:match:58145085"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: SportBet_SportMarketOutcome' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query SportBet_SportMarketOutcome($outcomeId: String!, $provider: SportsbookOddsProviderEnum!) {\n  sportMarketOutcome(outcomeId: $outcomeId, provider: $provider) {\n    id\n    name\n    odds\n    market {\n      id\n      name\n      status\n      provider\n      fixture {\n        id\n        slug\n        status\n        tournament {\n          slug\n          category {\n            slug\n            sport {\n              slug\n            }\n          }\n        }\n        data {\n          __typename\n          ... on SportFixtureDataMatch {\n            startTime\n            competitors {\n              name\n            }\n          }\n          ... on SportFixtureDataOutright {\n            startTime\n            name\n          }\n        }\n      }\n    }\n  }\n}\n","variables":{"outcomeId":"2365bf54-b55f-4929-9bec-2b9205f13a37","provider":"betradar"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetFeatureFlagDetails' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetFeatureFlagDetails($name: FlagNameEnum!) {\n  featureFlag(name: $name) {\n    id\n    config {\n      ... on BooleanFlagConfig {\n        enabled\n        type\n      }\n    }\n    name\n    ...FeatureFlagFragment\n  }\n}\n\nfragment FeatureFlagFragment on FeatureFlag {\n  id\n  name\n  createdAt\n  config {\n    ... on AgeVerificationFlagConfig {\n      minAge\n      enabled\n      type\n    }\n    ... on AddressVerificationFlagConfig {\n      bannedCountries\n      bannedStates\n      enabled\n      type\n    }\n    ... on DocumentVerificationFlagConfig {\n      provider\n      enabled\n      type\n    }\n    ... on RiskVerificationFlagConfig {\n      allowPoliticallyExposedPersons\n      allowThirdPartyAccounts\n      enabled\n      type\n    }\n    ... on PlaySessionFlagConfig {\n      expiryTime\n      enabled\n      type\n    }\n    ... on EvolutionOssProviderFlagConfig {\n      types\n      providers\n      enabled\n      type\n    }\n    ... on BiometricVerificationFlagConfig {\n      integration\n      enabled\n      type\n    }\n    ... on BooleanFlagConfig {\n      enabled\n      type\n    }\n    ... on BreezeFlagConfig {\n      enabled\n      type\n      onRampEnabled\n      offRampEnabled\n    }\n    ... on TransactionEligibilityFlagConfig {\n      enabled\n      cryptoDeposits\n      cryptoWithdrawals\n      fiatDeposits\n      fiatWithdrawals\n      type\n    }\n    ... on CashierNameMatchConfig {\n      type\n      cashierNameMatchProviders\n      closedBetaUsers\n      closedBeta\n      enabled\n      matchThreshold\n    }\n    ... on SweepsPaymentAccountManagerConfig {\n      enabled\n      type\n      enforced\n    }\n    ... on SbKinesisFlagConfig {\n      type\n      enabled\n      rbInactiveBet\n      rbInactiveBetEvent\n      rbInactiveBetOutcome\n      sbInactiveBet\n      sbInactiveBetEvent\n      sbInactiveBetOutcome\n    }\n    ... on FiatPaymentsFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on WorldpayFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on StakeOriginalsHttpFlagConfig {\n      type\n      enabled\n      games\n    }\n  }\n  __typename\n}\n","variables":{"name":"onboarding_flow_changes_flag"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetFeatureFlagDetails' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetFeatureFlagDetails($name: FlagNameEnum!) {\n  featureFlag(name: $name) {\n    id\n    config {\n      ... on BooleanFlagConfig {\n        enabled\n        type\n      }\n    }\n    name\n    ...FeatureFlagFragment\n  }\n}\n\nfragment FeatureFlagFragment on FeatureFlag {\n  id\n  name\n  createdAt\n  config {\n    ... on AgeVerificationFlagConfig {\n      minAge\n      enabled\n      type\n    }\n    ... on AddressVerificationFlagConfig {\n      bannedCountries\n      bannedStates\n      enabled\n      type\n    }\n    ... on DocumentVerificationFlagConfig {\n      provider\n      enabled\n      type\n    }\n    ... on RiskVerificationFlagConfig {\n      allowPoliticallyExposedPersons\n      allowThirdPartyAccounts\n      enabled\n      type\n    }\n    ... on PlaySessionFlagConfig {\n      expiryTime\n      enabled\n      type\n    }\n    ... on EvolutionOssProviderFlagConfig {\n      types\n      providers\n      enabled\n      type\n    }\n    ... on BiometricVerificationFlagConfig {\n      integration\n      enabled\n      type\n    }\n    ... on BooleanFlagConfig {\n      enabled\n      type\n    }\n    ... on BreezeFlagConfig {\n      enabled\n      type\n      onRampEnabled\n      offRampEnabled\n    }\n    ... on TransactionEligibilityFlagConfig {\n      enabled\n      cryptoDeposits\n      cryptoWithdrawals\n      fiatDeposits\n      fiatWithdrawals\n      type\n    }\n    ... on CashierNameMatchConfig {\n      type\n      cashierNameMatchProviders\n      closedBetaUsers\n      closedBeta\n      enabled\n      matchThreshold\n    }\n    ... on SweepsPaymentAccountManagerConfig {\n      enabled\n      type\n      enforced\n    }\n    ... on SbKinesisFlagConfig {\n      type\n      enabled\n      rbInactiveBet\n      rbInactiveBetEvent\n      rbInactiveBetOutcome\n      sbInactiveBet\n      sbInactiveBetEvent\n      sbInactiveBetOutcome\n    }\n    ... on FiatPaymentsFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on WorldpayFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on StakeOriginalsHttpFlagConfig {\n      type\n      enabled\n      games\n    }\n  }\n  __typename\n}\n","variables":{"name":"transaction_eligibility_turkish_requirements_flag"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetCricketScorecard' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetCricketScorecard($extId: String!) {\n  cricketScoreCard(extId: $extId) {\n    ...fragment\n  }\n}\n\nfragment fragment on SportCricketScoreCard {\n  name\n  overs {\n    balls\n    isCurrentOver\n    overNumber\n    runs\n  }\n  team1\n  team2\n  commentry\n  competition\n  status\n  scheduledStart\n  currentInningsNumber\n  innings {\n    teamName\n    inningsNumber\n    overs\n    runs\n    wickets\n    batsMen {\n      active\n      playerName\n      balls\n      runs\n      onStrike\n    }\n    bowlers {\n      balls\n      isActiveBowler\n      overs\n      playerName\n      runs\n      wickets\n    }\n  }\n}\n","variables":{"extId":"sr:match:58145085"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetFeatureFlagDetails' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetFeatureFlagDetails($name: FlagNameEnum!) {\n  featureFlag(name: $name) {\n    id\n    config {\n      ... on BooleanFlagConfig {\n        enabled\n        type\n      }\n    }\n    name\n    ...FeatureFlagFragment\n  }\n}\n\nfragment FeatureFlagFragment on FeatureFlag {\n  id\n  name\n  createdAt\n  config {\n    ... on AgeVerificationFlagConfig {\n      minAge\n      enabled\n      type\n    }\n    ... on AddressVerificationFlagConfig {\n      bannedCountries\n      bannedStates\n      enabled\n      type\n    }\n    ... on DocumentVerificationFlagConfig {\n      provider\n      enabled\n      type\n    }\n    ... on RiskVerificationFlagConfig {\n      allowPoliticallyExposedPersons\n      allowThirdPartyAccounts\n      enabled\n      type\n    }\n    ... on PlaySessionFlagConfig {\n      expiryTime\n      enabled\n      type\n    }\n    ... on EvolutionOssProviderFlagConfig {\n      types\n      providers\n      enabled\n      type\n    }\n    ... on BiometricVerificationFlagConfig {\n      integration\n      enabled\n      type\n    }\n    ... on BooleanFlagConfig {\n      enabled\n      type\n    }\n    ... on BreezeFlagConfig {\n      enabled\n      type\n      onRampEnabled\n      offRampEnabled\n    }\n    ... on TransactionEligibilityFlagConfig {\n      enabled\n      cryptoDeposits\n      cryptoWithdrawals\n      fiatDeposits\n      fiatWithdrawals\n      type\n    }\n    ... on CashierNameMatchConfig {\n      type\n      cashierNameMatchProviders\n      closedBetaUsers\n      closedBeta\n      enabled\n      matchThreshold\n    }\n    ... on SweepsPaymentAccountManagerConfig {\n      enabled\n      type\n      enforced\n    }\n    ... on SbKinesisFlagConfig {\n      type\n      enabled\n      rbInactiveBet\n      rbInactiveBetEvent\n      rbInactiveBetOutcome\n      sbInactiveBet\n      sbInactiveBetEvent\n      sbInactiveBetOutcome\n    }\n    ... on FiatPaymentsFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on WorldpayFlagConfig {\n      type\n      enabled\n      withdrawalEnabled\n      depositEnabled\n    }\n    ... on StakeOriginalsHttpFlagConfig {\n      type\n      enabled\n      games\n    }\n  }\n  __typename\n}\n","variables":{"name":"responsible_gambling_flag"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: SportBet_SportMarketOutcome' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query SportBet_SportMarketOutcome($outcomeId: String!, $provider: SportsbookOddsProviderEnum!) {\n  sportMarketOutcome(outcomeId: $outcomeId, provider: $provider) {\n    id\n    name\n    odds\n    market {\n      id\n      name\n      status\n      provider\n      fixture {\n        id\n        slug\n        status\n        tournament {\n          slug\n          category {\n            slug\n            sport {\n              slug\n            }\n          }\n        }\n        data {\n          __typename\n          ... on SportFixtureDataMatch {\n            startTime\n            competitors {\n              name\n            }\n          }\n          ... on SportFixtureDataOutright {\n            startTime\n            name\n          }\n        }\n      }\n    }\n  }\n}\n","variables":{"outcomeId":"2365bf54-b55f-4929-9bec-2b9205f13a37","provider":"betradar"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: SportsMinBet' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query SportsMinBet {\n  info {\n    currencies {\n      name\n      sportBetMin {\n        value\n      }\n    }\n  }\n}\n","variables":{}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: GetCricketScorecard' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query GetCricketScorecard($extId: String!) {\n  cricketScoreCard(extId: $extId) {\n    ...fragment\n  }\n}\n\nfragment fragment on SportCricketScoreCard {\n  name\n  overs {\n    balls\n    isCurrentOver\n    overNumber\n    runs\n  }\n  team1\n  team2\n  commentry\n  competition\n  status\n  scheduledStart\n  currentInningsNumber\n  innings {\n    teamName\n    inningsNumber\n    overs\n    runs\n    wickets\n    batsMen {\n      active\n      playerName\n      balls\n      runs\n      onStrike\n    }\n    bowlers {\n      balls\n      isActiveBowler\n      overs\n      playerName\n      runs\n      wickets\n    }\n  }\n}\n","variables":{"extId":"sr:match:58145085"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  -H 'x-operation-name: SportBet_SportMarketOutcome' \
+  -H 'x-operation-type: query' \
+  --data-raw '{"query":"query SportBet_SportMarketOutcome($outcomeId: String!, $provider: SportsbookOddsProviderEnum!) {\n  sportMarketOutcome(outcomeId: $outcomeId, provider: $provider) {\n    id\n    name\n    odds\n    market {\n      id\n      name\n      status\n      provider\n      fixture {\n        id\n        slug\n        status\n        tournament {\n          slug\n          category {\n            slug\n            sport {\n              slug\n            }\n          }\n        }\n        data {\n          __typename\n          ... on SportFixtureDataMatch {\n            startTime\n            competitors {\n              name\n            }\n          }\n          ... on SportFixtureDataOutright {\n            startTime\n            name\n          }\n        }\n      }\n    }\n  }\n}\n","variables":{"outcomeId":"2365bf54-b55f-4929-9bec-2b9205f13a37","provider":"betradar"}}'
+
+curl 'https://stake.games/_api/graphql' \
+  -X POST \
+  -H ':authority: stake.games' \
+  -H ':method: POST' \
+  -H ':path: /_api/graphql' \
+  -H ':scheme: https' \
+  -H 'accept: */*' \
+  -H 'accept-encoding: gzip, deflate, br, zstd' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'access-control-allow-origin: *' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://stake.games' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://stake.games/sports/cricket/india/indian-premier-league/45157223-chennai-super-kings-mumbai-indians' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-arch: ""' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "133.0.6943.142"' \
+  -H 'sec-ch-ua-full-version-list: "Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-model: "Nexus 5"' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'sec-ch-ua-platform-version: "6.0"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36' \
+  -H 'x-language: en' \
+  --data-raw '{"query":"query FixtureIndexGroups($fixture: String!) {\n  slugFixture(fixture: $fixture) {\n    id\n    groups {\n      id\n      ...SportGroup\n    }\n    maps: groups(groups: [\"maps\"]) {\n      id\n      ...SportGroup\n      templates(includeEmpty: false) {\n        id\n        extId\n        markets {\n          status\n          specifiers\n          extId\n        }\n      }\n    }\n  }\n}\n\nfragment SportGroup on SportGroup {\n  name\n  translation\n  rank\n}\n","variables":{"fixture":"45157223-chennai-super-kings-mumbai-indians","fixtureId":"7fc2a75d-d7fd-433d-a08d-d9318f33c383","provider":"betradar","groups":["main"]}}'
