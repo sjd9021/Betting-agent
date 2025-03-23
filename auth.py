@@ -368,5 +368,38 @@ def capture_screenshot(page, filename):
     except Exception as e:
         logger.error(f"Failed to capture screenshot: {str(e)}")
 
+def authenticate_and_get_credentials(headless: bool = True) -> bool:
+    """
+    Convenience function to authenticate with the provided username and password.
+    
+    Args:
+        headless: Whether to run the browser in headless mode
+        
+    Returns:
+        True if authentication was successful, False otherwise
+    """
+    # Get credentials from environment
+    username = os.getenv("CRIC10_USERNAME")
+    password = os.getenv("CRIC10_PASSWORD")
+    
+    if not username or not password:
+        logger.error("Missing username or password in environment variables")
+        return False
+    
+    # Run the authentication process
+    try:
+        logger.info("Running authentication with credentials from environment")
+        result = authenticate(headless=headless)
+        
+        if result:
+            logger.info("Authentication successful")
+            return True
+        else:
+            logger.error("Authentication failed")
+            return False
+    except Exception as e:
+        logger.error(f"Authentication error: {e}")
+        return False
+
 if __name__ == "__main__":
     authenticate()
