@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment variables and credentials
+.env
+.credentials.json
+.credentials_complete.json
+.partial_credentials.json
+
+# Saved data
+markets/
+bets/
+*.json
+
+# Screenshots
+*.png
+*.jpg
+*.jpeg
+
+# Logs
+*.log
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+/Users/samvitjatia/stake/temp
+*/temp
+
+/Users/samvitjatia/stake/temp/betmade.har
+/Users/samvitjatia/stake/temp/getevent.har
+/Users/samvitjatia/stake/temp/graphql_requests.json
+/Users/samvitjatia/stake/temp/graphql_requests2.json
+/Users/samvitjatia/stake/temp/graphql_summary.txt
+/Users/samvitjatia/stake/temp/graphql_summary2.txt
+/Users/samvitjatia/stake/temp/logs.py
+/Users/samvitjatia/stake/temp/over_curl.py
+/Users/samvitjatia/stake/temp/overs10cric10.har
+/Users/samvitjatia/stake/temp/stake_graphql_curls.txt
+/Users/samvitjatia/stake/temp/stake_graphql_schemas.json
+/Users/samvitjatia/stake/temp/stake.games.har
