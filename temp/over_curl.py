@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 # Load the HAR file
-har_file = Path("/Users/samvitjatia/stake/betmade.har")
+har_file = Path("/Users/samvitjatia/stake/temp/getevent.har")
 with har_file.open(encoding="utf-8") as f:
     har_data = json.load(f)
 
