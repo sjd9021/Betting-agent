@@ -1,6 +1,7 @@
 # auth.py
 from playwright.sync_api import sync_playwright
 import os
+import subprocess
 from dotenv import load_dotenv
 import json
 from datetime import datetime
@@ -400,6 +401,109 @@ def authenticate_and_get_credentials(headless: bool = True) -> bool:
     except Exception as e:
         logger.error(f"Authentication error: {e}")
         return False
+
+def validate_credentials(credentials):
+    """Validate if the current credentials are still valid using the CheckLoggedIn query."""
+    player_id = credentials.get("player_id")
+    sportsbook_token = credentials.get("sportsbook_token")
+    
+    if not player_id or not sportsbook_token:
+        logger.error("Missing player_id or sportsbook_token in credentials")
+        return False
+    
+    # Extract cookie data from credentials if available
+    cookies_data = credentials.get("cookies", {})
+    session_cookie = cookies_data.get("session", "")
+    session_sig = cookies_data.get("session.sig", "")
+    player_status = cookies_data.get("player_status", "")
+    
+    # Prepare cookie string
+    cookie_string = ""
+    if session_cookie:
+        cookie_string += f"session={session_cookie}; "
+    if session_sig:
+        cookie_string += f"session.sig={session_sig}; "
+    if player_status:
+        cookie_string += f"player_status={player_status}; "
+    if player_id:
+        cookie_string += f"player_id={player_id}; "
+    
+    # Use the CheckLoggedIn query to validate credentials
+    query = {
+        "operationName": "CheckLoggedIn",
+        "variables": {},
+        "query": "query CheckLoggedIn { checkLoggedIn }"
+    }
+    
+    curl_command = f"""
+    curl 'https://www.my10cric.com/graphql' \\
+      -H 'content-type: application/json' \\
+      -H 'x-player-id: {player_id}' \\
+      -H 'x-sportsbook-token: {sportsbook_token}' \\
+      -H 'x-tenant: 10CRIC' \\
+      -b '{cookie_string}' \\
+      --data-raw '{json.dumps(query)}'
+    """
+    
+    logger.info("Validating credentials using CheckLoggedIn query with cookies")
+    result = subprocess.run(curl_command, shell=True, capture_output=True, text=True)
+    
+    if result.returncode != 0:
+        logger.error(f"Error executing validation request: {result.stderr}")
+        return False
+    
+    try:
+        response = json.loads(result.stdout)
+        
+        # Check if the response contains checkLoggedIn: true
+        if "data" in response and "checkLoggedIn" in response["data"]:
+            is_logged_in = response["data"]["checkLoggedIn"]
+            if is_logged_in:
+                logger.info("Credentials are valid")
+                return True
+            else:
+                logger.error("Credentials are invalid: User is not logged in")
+                return False
+        
+        # Check for errors
+        if "errors" in response:
+            logger.error(f"Invalid credentials: {response.get('errors')}")
+            return False
+            
+        logger.error(f"Unexpected response format: {response}")
+        return False
+    except Exception as e:
+        logger.error(f"Error parsing validation response: {e}")
+        return False
+
+def refresh_auth_if_needed(force_refresh=False, headless=True):
+    """
+    Check if authentication needs refresh and perform if necessary.
+    
+    Args:
+        force_refresh (bool): Whether to force authentication refresh
+        headless (bool): Whether to run the browser in headless mode
+        
+    Returns:
+        dict: Valid credentials or None if authentication fails
+    """
+    if force_refresh:
+        logger.info("Forced authentication refresh")
+        return authenticate(headless=headless)
+        
+    try:
+        with open(".credentials.json", "r") as f:
+            credentials = json.load(f)
+            
+        if validate_credentials(credentials):
+            logger.info("Credentials still valid, no refresh needed")
+            return credentials
+            
+        logger.info("Credentials expired, refreshing authentication")
+        return authenticate(headless=headless)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logger.warning(f"No valid credentials found ({e}), performing fresh authentication")
+        return authenticate(headless=headless)
 
 if __name__ == "__main__":
     authenticate()

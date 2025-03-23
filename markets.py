@@ -159,24 +159,51 @@ def extract_active_markets(event_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     """
     active_markets = []
     
-    # Check if event data is valid
-    if not event_data or "expandedMarkets" not in event_data:
-        logger.warning("No markets found in event data")
+    # Get the data from the correct structure as seen in the raw JSON
+    if not event_data:
+        logger.warning("No event data provided")
+        return []
+        
+    # Check if data is already in the right format or needs extraction from GraphQL response
+    if "data" in event_data and "lazyEvent" in event_data["data"] and "sportEvent" in event_data["data"]["lazyEvent"]:
+        event_data = event_data["data"]["lazyEvent"]["sportEvent"]
+    
+    # Check if event data contains expanded markets
+    if "expandedMarkets" not in event_data:
+        logger.warning("No expandedMarkets found in event data")
         return []
     
-    logger.info(f"Extracting active markets for event: {event_data.get('name')}")
+    event_id = event_data.get("id")
+    event_name = event_data.get("name")
+    sport_id = event_data.get("sportId")
+    sport_name = event_data.get("sportName")
+    league_id = event_data.get("leagueId")
+    league_name = event_data.get("leagueName")
+    participant_home = event_data.get("participantHomeName")
+    participant_away = event_data.get("participantAwayName")
+    
+    logger.info(f"Extracting active markets for event: {event_name} (ID: {event_id})")
     
     for market in event_data.get("expandedMarkets", []):
         market_id = market.get("id")
         market_name = market.get("name")
         
+        # Skip markets without a name or id
+        if not market_id or not market_name:
+            continue
+        
         for market_line in market.get("marketLines", []):
+            market_line_id = market_line.get("id")
+            market_line_name = market_line.get("name", market_name)  # Use market name as fallback
+            
             # Skip suspended market lines
-            if market_line.get("isSuspended", True) or market_line.get("marketLineStatus") != "ACTIVE":
+            if market_line.get("isSuspended", True):
                 continue
                 
-            market_line_id = market_line.get("id")
-            market_line_name = market_line.get("name")
+            # Check if market line status is active
+            # API returns "MARKET_LINE_STATUS_ACTIVE", not just "ACTIVE"
+            if market_line.get("marketLineStatus") != "MARKET_LINE_STATUS_ACTIVE":
+                continue
             
             # Extract active selections
             active_selections = []
@@ -191,19 +218,20 @@ def extract_active_markets(event_data: Dict[str, Any]) -> List[Dict[str, Any]]:
             # Only add market lines with active selections
             if active_selections:
                 active_markets.append({
-                    "event_id": event_data.get("id"),
-                    "event_name": event_data.get("name"),
+                    "event_id": event_id,
+                    "event_name": event_name,
                     "market_id": market_id,
-                    "market_name": market_name,
+                    "market_name": market_line_name,  # Use the market line name which contains detailed info
                     "market_line_id": market_line_id,
                     "market_line_name": market_line_name,
+                    "market_lines": [market_line],  # Include full market line data for sanction manager
                     "selections": active_selections,
-                    "sport_id": event_data.get("sportId"),
-                    "sport_name": event_data.get("sportName"),
-                    "league_id": event_data.get("leagueId"),
-                    "league_name": event_data.get("leagueName"),
-                    "participant_home": event_data.get("participantHomeName"),
-                    "participant_away": event_data.get("participantAwayName")
+                    "sport_id": sport_id,
+                    "sport_name": sport_name,
+                    "league_id": league_id,
+                    "league_name": league_name,
+                    "participant_home": participant_home,
+                    "participant_away": participant_away
                 })
     
     logger.info(f"Found {len(active_markets)} active market lines")
