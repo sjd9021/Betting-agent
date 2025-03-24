@@ -2,6 +2,7 @@ import os
 import json
 import logging
 import datetime
+import pytz
 from typing import Dict, Any, List, Optional
 
 from cricket import get_upcoming_ipl_matches
@@ -42,6 +43,11 @@ class SimpleMarketMonitor:
                 logger.info("No upcoming IPL matches found")
                 return None
             
+            # Get IST timezone for comparison
+            ist_tz = pytz.timezone('Asia/Kolkata')
+            now_ist = datetime.datetime.now(ist_tz)
+            logger.info(f"Current time in IST: {now_ist.strftime('%Y-%m-%d %H:%M:%S %Z')}")
+            
             # Display all matches with start times
             logger.info("Available IPL matches:")
             for idx, match in enumerate(matches, 1):
@@ -49,42 +55,74 @@ class SimpleMarketMonitor:
                 name = match.get("name", "Unknown match")
                 logger.info(f"{idx}. {name} - Start: {start_time_str}")
                 
-            # Find matches that are happening now
-            now = datetime.datetime.now()
+            # Find matches that are happening now or starting soon
             current_matches = []
+            upcoming_matches = []
             
             for match in matches:
                 start_time_str = match.get("startEventDate")
                 if not start_time_str:
                     continue
                     
-                # Parse the start time
+                # Parse the start time (Unix timestamp in milliseconds)
                 try:
-                    start_time = datetime.datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+                    # Convert timestamp to datetime object with IST timezone
+                    timestamp_seconds = int(start_time_str) / 1000
+                    start_time_utc = datetime.datetime.fromtimestamp(timestamp_seconds, tz=pytz.UTC)
+                    start_time_ist = start_time_utc.astimezone(ist_tz)
+                    
+                    logger.info(f"Match: {match.get('name')} Start time (IST): {start_time_ist.strftime('%Y-%m-%d %H:%M:%S %Z')}")
+                    
+                    # Time differences for decision making
+                    time_since_start = now_ist - start_time_ist  # Positive if match has started
+                    time_until_start = start_time_ist - now_ist  # Positive if match hasn't started yet
                     
                     # Check if match has started (within last 4 hours)
-                    time_diff = now - start_time
-                    if datetime.timedelta(0) <= time_diff <= datetime.timedelta(hours=4):
-                        logger.info(f"Found ongoing match: {match.get('name')}")
+                    if datetime.timedelta(0) <= time_since_start <= datetime.timedelta(hours=4):
+                        logger.info(f"Found ongoing match: {match.get('name')} (started {time_since_start} ago)")
                         current_matches.append(match)
+                    # Check for upcoming matches (starting within the next 3 hours)
+                    elif datetime.timedelta(0) <= time_until_start <= datetime.timedelta(hours=3):
+                        logger.info(f"Found upcoming match: {match.get('name')} (starts in {time_until_start})")
+                        upcoming_matches.append(match)
+                    else:
+                        if time_since_start > datetime.timedelta(0):
+                            logger.info(f"Match too old: {match.get('name')} (started {time_since_start} ago)")
+                        else:
+                            logger.info(f"Match too far in future: {match.get('name')} (starts in {time_until_start})")
+                
                 except Exception as e:
                     logger.error(f"Error parsing match time: {e}")
+                    logger.error(f"Problematic timestamp: {start_time_str}")
             
-            if not current_matches:
-                logger.info("No ongoing IPL matches found")
+            # Prioritize current matches, but use upcoming matches if no current ones
+            if current_matches:
+                logger.info(f"Found {len(current_matches)} ongoing matches")
+                matches_to_use = current_matches
+            elif upcoming_matches:
+                logger.info(f"No ongoing matches, but found {len(upcoming_matches)} matches starting soon")
+                matches_to_use = upcoming_matches
+            else:
+                logger.info("No ongoing or upcoming IPL matches found")
                 return None
                 
             # If multiple matches, ask user to select
-            if len(current_matches) > 1:
-                logger.info("Multiple ongoing matches found. Please select one:")
-                for idx, match in enumerate(current_matches, 1):
-                    logger.info(f"{idx}. {match.get('name')}")
+            if len(matches_to_use) > 1:
+                logger.info("Multiple matches found. Please select one:")
+                for idx, match in enumerate(matches_to_use, 1):
+                    name = match.get("name", "Unknown match")
+                    start_time_str = match.get("startEventDate", "Unknown")
+                    timestamp_seconds = int(start_time_str) / 1000
+                    start_time_utc = datetime.datetime.fromtimestamp(timestamp_seconds, tz=pytz.UTC)
+                    start_time_ist = start_time_utc.astimezone(ist_tz)
+                    time_str = start_time_ist.strftime('%Y-%m-%d %H:%M:%S %Z')
+                    logger.info(f"{idx}. {name} - {time_str}")
                 
                 selection = input("Enter match number: ")
                 try:
                     selected_idx = int(selection) - 1
-                    if 0 <= selected_idx < len(current_matches):
-                        return current_matches[selected_idx]
+                    if 0 <= selected_idx < len(matches_to_use):
+                        return matches_to_use[selected_idx]
                     else:
                         logger.error("Invalid selection")
                         return None
@@ -92,7 +130,7 @@ class SimpleMarketMonitor:
                     logger.error("Invalid input")
                     return None
             else:
-                return current_matches[0]
+                return matches_to_use[0]
             
         except Exception as e:
             logger.error(f"Error finding current match: {e}")
