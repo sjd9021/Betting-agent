@@ -42,16 +42,34 @@ def main():
     parser.add_argument("--event-id", help="Specific event ID to check")
     parser.add_argument("--match-name", help="Match name for display purposes")
     parser.add_argument("--auto-bet", action="store_true", help="Automatically place bets on sanctioned markets")
+    
+    # Add bet history options
+    parser.add_argument("--show-history", action="store_true", help="Display bet history")
+    parser.add_argument("--history-hours", type=int, help="Filter history by hours (e.g., 24 for last day)")
+    
     args = parser.parse_args()
     
     logger.info("Starting IPL Market Checker")
     
+    # Create market monitor instance
+    monitor = SimpleMarketMonitor(auto_betting=args.auto_bet)
+    
+    # Always show a brief betting summary at startup
+    bet_summary = monitor.bet_tracker.get_bet_summary()
+    logger.info("\n=== Betting Summary ===")
+    logger.info(f"Total bets placed: {bet_summary['total_bets']}")
+    logger.info(f"Total stake: {bet_summary['total_stake']}")
+    logger.info(f"Recent bets (24h): {bet_summary['recent_bets']['count']}")
+    
+    # If just showing history, no need for authentication
+    if args.show_history and not args.event_id:
+        logger.info("Displaying bet history")
+        monitor.display_bet_history(hours=args.history_hours)
+        return
+    
     # Setup authentication
     if not setup_authentication(force_refresh=args.auth, headless=args.headless):
         return
-    
-    # Start the market monitor with auto-betting parameter
-    monitor = SimpleMarketMonitor(auto_betting=args.auto_bet)
     
     # Display auto-betting status
     if args.auto_bet:
@@ -59,7 +77,13 @@ def main():
     else:
         logger.info("Auto-betting is disabled (use --auto-bet to enable)")
     
+    # Run the market monitor
     monitor.run(event_id=args.event_id, match_name=args.match_name)
+    
+    # Show bet history if requested (after checking markets)
+    if args.show_history:
+        logger.info("\nDisplaying bet history")
+        monitor.display_bet_history(hours=args.history_hours)
     
     logger.info("Market check completed")
 

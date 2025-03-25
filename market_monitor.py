@@ -9,6 +9,7 @@ from cricket import get_upcoming_ipl_matches
 from markets import get_markets_for_event, extract_active_markets
 from sanction import BettingSanctionManager
 from betting import place_bet
+from bet_tracker import BetTracker
 
 # Configure logging
 logging.basicConfig(
@@ -33,6 +34,7 @@ class SimpleMarketMonitor:
         """
         self.sanction_manager = BettingSanctionManager()
         self.auto_betting = auto_betting
+        self.bet_tracker = BetTracker()
         
     def find_current_match(self):
         """Find the current ongoing IPL match."""
@@ -157,6 +159,9 @@ class SimpleMarketMonitor:
             active_markets = extract_active_markets(event_data)
             logger.info(f"Found {len(active_markets)} active markets")
             
+            # Get match name for recording
+            match_name = event_data.get("name", "Unknown match")
+            
             # Categorize markets for better display
             single_over_markets = []
             over_range_markets = []
@@ -232,36 +237,92 @@ class SimpleMarketMonitor:
             
             if sanctioned_matches:
                 logger.info("\n=== Sanctioned Bets Found ===")
+                bets_placed = 0
+                bets_skipped = 0
+                
                 for idx, match in enumerate(sanctioned_matches, 1):
                     selection = match["selection"]
                     market = match["market"]
                     stake = match["stake"]
-                    logger.info(f"{idx}. Market: {market.get('market_name')}")
-                    logger.info(f"   Selection: {selection.get('name')} @ {selection.get('odds')}")
-                    logger.info(f"   Stake: {stake}")
-                    logger.info(f"   Details: Market ID: {market.get('market_id')}, Selection ID: {selection.get('selection_id')}")
                     
-                    # Auto-bet if enabled
+                    # Get IDs and values for tracking
+                    selection_id = selection.get("selection_id")
+                    market_id = market.get("market_id")
+                    market_line_id = market.get("market_line_id")
+                    market_name = market.get("market_name")
+                    selection_name = selection.get("name")
+                    odds = selection.get("odds")
+                    
+                    # Display bet details
+                    logger.info(f"{idx}. Market: {market_name}")
+                    logger.info(f"   Selection: {selection_name} @ {odds}")
+                    logger.info(f"   Stake: {stake}")
+                    logger.info(f"   Details: Market ID: {market_id}, Selection ID: {selection_id}")
+                    
+                    # Check if this is a duplicate bet
+                    is_duplicate = self.bet_tracker.is_duplicate_bet(
+                        event_id=event_id,
+                        market_id=market_id,
+                        selection_id=selection_id
+                    )
+                    
+                    # Auto-bet if enabled and not a duplicate
                     if self.auto_betting:
+                        if is_duplicate:
+                            logger.info(f"   ⚠️ Skipping duplicate bet")
+                            bets_skipped += 1
+                            continue
+                            
                         logger.info(f"   🎲 Attempting to place bet automatically...")
                         
                         bet_result = place_bet(
-                            selection_id=selection.get("selection_id"),
-                            event_id=event_data.get("id"),
-                            market_id=market.get("market_id"),
-                            market_line_id=market.get("market_line_id"),
+                            selection_id=selection_id,
+                            event_id=event_id,
+                            market_id=market_id,
+                            market_line_id=market_line_id,
                             stake=stake,
-                            odds=selection.get("odds"),
+                            odds=odds,
                             dry_run=False  # Set to False to actually place the bet
                         )
                         
                         if bet_result.get("status") == "success":
-                            logger.info(f"   ✅ Bet placed successfully! Bet ID: {bet_result.get('bet_id')}")
+                            bet_id = bet_result.get("bet_id")
+                            logger.info(f"   ✅ Bet placed successfully! Bet ID: {bet_id}")
+                            
+                            # Record the successful bet
+                            self.bet_tracker.record_successful_bet(
+                                bet_id=bet_id,
+                                event_id=event_id,
+                                match_name=match_name,
+                                market_id=market_id,
+                                market_name=market_name,
+                                market_line_id=market_line_id,
+                                selection_id=selection_id,
+                                selection_name=selection_name,
+                                odds=float(odds),
+                                stake=float(stake)
+                            )
+                            
+                            bets_placed += 1
                         else:
                             error_msg = bet_result.get("error", "Unknown error")
                             logger.error(f"   ❌ Failed to place bet: {error_msg}")
                             if "details" in bet_result:
                                 logger.error(f"   Details: {bet_result['details']}")
+                
+                # Display bet placement summary
+                if self.auto_betting:
+                    logger.info(f"\n=== Betting Summary ===")
+                    logger.info(f"Total bets placed: {bets_placed}")
+                    logger.info(f"Duplicate bets skipped: {bets_skipped}")
+                    
+                    # Display betting stats
+                    bet_summary = self.bet_tracker.get_bet_summary()
+                    logger.info(f"All-time statistics:")
+                    logger.info(f"  Total bets: {bet_summary['total_bets']}")
+                    logger.info(f"  Total stake: {bet_summary['total_stake']}")
+                    logger.info(f"  Potential return: {bet_summary['potential_return']}")
+                    logger.info(f"  Recent bets (24h): {bet_summary['recent_bets']['count']}")
             else:
                 logger.info("\nNo sanctioned bets found matching current markets")
             
@@ -325,4 +386,31 @@ class SimpleMarketMonitor:
             logger.info("Market check complete")
             
         except Exception as e:
-            logger.error(f"Error in market monitor: {e}") 
+            logger.error(f"Error in market monitor: {e}")
+    
+    def display_bet_history(self, hours=None):
+        """
+        Display betting history.
+        
+        Args:
+            hours: Optional number of hours to filter by
+        """
+        history = self.bet_tracker.get_bet_history(hours=hours)
+        
+        if not history:
+            logger.info("No betting history found")
+            return
+            
+        time_frame = f"last {hours} hours" if hours else "all time"
+        logger.info(f"\n=== Betting History ({time_frame}) ===")
+        logger.info(f"Total bets: {len(history)}")
+        
+        for idx, bet in enumerate(history, 1):
+            timestamp = datetime.datetime.fromisoformat(bet["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
+            logger.info(f"{idx}. [{timestamp}] {bet['match_name']}")
+            logger.info(f"   Market: {bet['market_name']}")
+            logger.info(f"   Selection: {bet['selection_name']} @ {bet['odds']}")
+            logger.info(f"   Stake: {bet['stake']}, Potential Return: {bet['potential_return']}")
+            logger.info(f"   Status: {bet['status']}")
+            logger.info(f"   Bet ID: {bet['bet_id']}")
+            logger.info("   ---") 
