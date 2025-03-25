@@ -30,9 +30,24 @@ SCHEDULE_FILE = os.path.join(CACHE_DIR, 'schedule.json')
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
 
+# Global variable to store mock time for testing
+MOCK_TIME = None
+
 def get_current_ist_time():
     """Get current time in IST timezone."""
     ist_tz = pytz.timezone('Asia/Kolkata')
+    
+    # Use mock time if set (for testing)
+    if MOCK_TIME:
+        try:
+            # Parse the mock time and convert to IST
+            if isinstance(MOCK_TIME, str):
+                dt = datetime.datetime.fromisoformat(MOCK_TIME.replace('Z', '+00:00'))
+                return dt.astimezone(ist_tz)
+        except Exception as e:
+            logger.warning(f"Error parsing mock time: {e}, using real time")
+    
+    # Use real time
     now_ist = datetime.datetime.now(ist_tz)
     return now_ist
 
@@ -467,8 +482,15 @@ def main():
     parser = argparse.ArgumentParser(description="IPL Match Scheduler")
     parser.add_argument("--prefetch", action="store_true", help="Run in prefetch mode to discover and cache match data")
     parser.add_argument("--bet", action="store_true", help="Run in betting mode to place bets on current match")
+    parser.add_argument("--mock-time", help="Mock time for testing (format: YYYY-MM-DDTHH:MM:SS)")
     
     args = parser.parse_args()
+    
+    # Set mock time if provided
+    global MOCK_TIME
+    if args.mock_time:
+        MOCK_TIME = args.mock_time
+        logger.info(f"Using mock time: {MOCK_TIME}")
     
     if args.prefetch:
         run_prefetch_mode()

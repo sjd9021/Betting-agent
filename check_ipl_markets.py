@@ -4,6 +4,13 @@ import logging
 import argparse
 from auth import authenticate, refresh_auth_if_needed
 from market_monitor import SimpleMarketMonitor
+import json
+import sys
+import time
+import random
+import datetime
+import pytz
+from typing import Dict, List, Any, Optional, Tuple
 
 # Configure logging
 logging.basicConfig(
@@ -15,6 +22,43 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger('ipl_market_check')
+
+# Constants
+DATA_DIR = 'data'
+CACHE_DIR = os.path.join(DATA_DIR, 'cache')
+MOCK_DIR = 'mock_data'
+SANCTIONED_BETS_FILE = os.path.join(DATA_DIR, 'sanctioned_bets.json')
+EVENT_IDS_FILE = 'ipl_event_ids.json'
+CONFIG_FILE = 'config.json'
+
+# Ensure directories exist
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(CACHE_DIR, exist_ok=True)
+
+# Global variable to store mock time for testing
+MOCK_TIME = None
+
+def get_current_ist_time():
+    """Get current time in IST timezone."""
+    ist_tz = pytz.timezone('Asia/Kolkata')
+    
+    # Use mock time if set (for testing)
+    if MOCK_TIME:
+        try:
+            # Parse the mock time and convert to IST
+            if isinstance(MOCK_TIME, str):
+                dt = datetime.datetime.fromisoformat(MOCK_TIME.replace('Z', '+00:00'))
+                return dt.astimezone(ist_tz)
+        except Exception as e:
+            logger.warning(f"Error parsing mock time: {e}, using real time")
+    
+    # Use real time
+    now_ist = datetime.datetime.now(ist_tz)
+    return now_ist
+
+def format_ist_time(dt):
+    """Format datetime object to IST time string."""
+    return dt.strftime('%Y-%m-%d %H:%M:%S %Z')
 
 def setup_authentication(force_refresh=False, headless=False):
     """
@@ -50,8 +94,24 @@ def main():
     # Add new flags for automated scheduler
     parser.add_argument("--discover-only", action="store_true", help="Only discover matches, don't check markets or place bets")
     parser.add_argument("--prefetch-only", action="store_true", help="Only prefetch markets, don't place bets")
+    parser.add_argument("--use-mock", action="store_true", help="Use mock data for testing")
+    parser.add_argument("--mock-time", help="Mock time for testing (format: YYYY-MM-DDTHH:MM:SS)")
     
     args = parser.parse_args()
+    
+    # Set mock time if provided
+    global MOCK_TIME
+    if args.mock_time:
+        MOCK_TIME = args.mock_time
+        logger.info(f"Using mock time: {MOCK_TIME}")
+    
+    # Force use mock data if specified
+    if args.use_mock:
+        config = load_config()
+        config["use_mock_data"] = True
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(config, f, indent=2)
+        logger.info("Forced use of mock data")
     
     logger.info("Starting IPL Market Checker")
     
