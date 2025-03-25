@@ -80,11 +80,13 @@ def fetch_upcoming_cricket_events(sport_id: Optional[str] = None) -> List[Dict[s
     
     # Construct curl command
     curl_command = f"""
-    curl 'https://www.my10cric.com/graphql' \\
+    curl 'https://www.10crics.com/graphql' \\
       -H 'content-type: application/json' \\
       -H 'x-player-id: {player_id}' \\
       -H 'x-sportsbook-token: {sportsbook_token}' \\
       -H 'x-tenant: 10CRIC' \\
+      -H 'x-apollo-operation-name: listWidgetEvents' \\
+      -H 'apollo-require-preflight: true' \\
       --data-raw '{json.dumps(query)}'
     """
     

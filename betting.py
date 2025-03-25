@@ -187,11 +187,13 @@ def place_bet(
     
     # Construct the curl command
     curl_command = f"""
-    curl 'https://www.my10cric.com/graphql' \\
+    curl 'https://www.10crics.com/graphql' \\
       -H 'content-type: application/json' \\
       -H 'x-player-id: {player_id}' \\
       -H 'x-sportsbook-token: {sportsbook_token}' \\
       -H 'x-tenant: 10CRIC' \\
+      -H 'x-apollo-operation-name: placeBet' \\
+      -H 'apollo-require-preflight: true' \\
       --data-raw '{json.dumps(payload)}'
     """
     

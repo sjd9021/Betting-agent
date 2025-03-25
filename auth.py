@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 import time
 import logging
+import requests
 
 # Configure logging
 logging.basicConfig(
@@ -59,7 +60,7 @@ def authenticate(headless=False):
             
             # Navigate to sports page to ensure all tokens are loaded
             logger.info("Navigating to sports page to load tokens...")
-            page.goto("https://www.my10cric.com/cricket/indian-premier-league", timeout=30000)
+            page.goto("https://www.10crics.com/cricket/indian-premier-league", timeout=30000)
             time.sleep(10)
             
             # Extract and process authentication data
@@ -415,18 +416,13 @@ def validate_credentials(credentials):
     cookies_data = credentials.get("cookies", {})
     session_cookie = cookies_data.get("session", "")
     session_sig = cookies_data.get("session.sig", "")
-    player_status = cookies_data.get("player_status", "")
     
-    # Prepare cookie string
-    cookie_string = ""
+    # Prepare cookies for requests
+    cookies = {}
     if session_cookie:
-        cookie_string += f"session={session_cookie}; "
+        cookies['session'] = session_cookie
     if session_sig:
-        cookie_string += f"session.sig={session_sig}; "
-    if player_status:
-        cookie_string += f"player_status={player_status}; "
-    if player_id:
-        cookie_string += f"player_id={player_id}; "
+        cookies['session.sig'] = session_sig
     
     # Use the CheckLoggedIn query to validate credentials
     query = {
@@ -435,45 +431,70 @@ def validate_credentials(credentials):
         "query": "query CheckLoggedIn { checkLoggedIn }"
     }
     
-    curl_command = f"""
-    curl 'https://www.my10cric.com/graphql' \\
-      -H 'content-type: application/json' \\
-      -H 'x-player-id: {player_id}' \\
-      -H 'x-sportsbook-token: {sportsbook_token}' \\
-      -H 'x-tenant: 10CRIC' \\
-      -b '{cookie_string}' \\
-      --data-raw '{json.dumps(query)}'
-    """
-    
-    logger.info("Validating credentials using CheckLoggedIn query with cookies")
-    result = subprocess.run(curl_command, shell=True, capture_output=True, text=True)
-    
-    if result.returncode != 0:
-        logger.error(f"Error executing validation request: {result.stderr}")
-        return False
-    
+    # Using requests library for validation - more reliable than curl
     try:
-        response = json.loads(result.stdout)
+        logger.info("Validating credentials using CheckLoggedIn query with requests")
         
-        # Check if the response contains checkLoggedIn: true
-        if "data" in response and "checkLoggedIn" in response["data"]:
-            is_logged_in = response["data"]["checkLoggedIn"]
-            if is_logged_in:
-                logger.info("Credentials are valid")
-                return True
-            else:
-                logger.error("Credentials are invalid: User is not logged in")
-                return False
+        # Try both domains, as the site might redirect
+        domains = [
+            "https://www.10crics.com",
+            "https://www.my10cric.com"
+        ]
         
-        # Check for errors
-        if "errors" in response:
-            logger.error(f"Invalid credentials: {response.get('errors')}")
-            return False
+        headers = {
+            'content-type': 'application/json',
+            'x-player-id': player_id,
+            'x-sportsbook-token': sportsbook_token,
+            'x-tenant': '10CRIC',
+            # Add CSRF protection headers
+            'x-apollo-operation-name': 'CheckLoggedIn',
+            'apollo-require-preflight': 'true',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
+        }
+        
+        for domain in domains:
+            url = f"{domain}/graphql"
+            logger.info(f"Trying domain: {domain}")
             
-        logger.error(f"Unexpected response format: {response}")
+            response = requests.post(
+                url,
+                json=query,
+                headers=headers,
+                cookies=cookies,
+                timeout=10,
+                allow_redirects=True
+            )
+            
+            logger.info(f"Status code: {response.status_code}")
+            
+            if response.status_code == 200:
+                try:
+                    data = response.json()
+                    
+                    # Check response content
+                    if "data" in data and "checkLoggedIn" in data["data"]:
+                        is_logged_in = data["data"]["checkLoggedIn"]
+                        if is_logged_in:
+                            logger.info("Credentials are valid")
+                            return True
+                        else:
+                            logger.info("User is not logged in according to API")
+                    
+                    # Check for errors
+                    if "errors" in data:
+                        logger.info(f"API returned errors: {data['errors']}")
+                except json.JSONDecodeError:
+                    logger.info(f"Response is not valid JSON: {response.text[:100]}...")
+            
+            # If we got a response but it wasn't a successful validation,
+            # try the next domain before giving up
+        
+        # If we get here, neither domain worked
+        logger.error("Could not validate credentials with any domain")
         return False
+        
     except Exception as e:
-        logger.error(f"Error parsing validation response: {e}")
+        logger.error(f"Error validating credentials: {e}")
         return False
 
 def refresh_auth_if_needed(force_refresh=False, headless=True):
