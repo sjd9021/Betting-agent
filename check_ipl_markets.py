@@ -47,6 +47,10 @@ def main():
     parser.add_argument("--show-history", action="store_true", help="Display bet history")
     parser.add_argument("--history-hours", type=int, help="Filter history by hours (e.g., 24 for last day)")
     
+    # Add new flags for automated scheduler
+    parser.add_argument("--discover-only", action="store_true", help="Only discover matches, don't check markets or place bets")
+    parser.add_argument("--prefetch-only", action="store_true", help="Only prefetch markets, don't place bets")
+    
     args = parser.parse_args()
     
     logger.info("Starting IPL Market Checker")
@@ -67,6 +71,21 @@ def main():
         monitor.display_bet_history(hours=args.history_hours)
         return
     
+    # Discovery mode - just find matches and exit
+    if args.discover_only:
+        logger.info("Running in discover-only mode")
+        from cricket import get_upcoming_ipl_matches
+        matches = get_upcoming_ipl_matches()
+        
+        if matches:
+            logger.info(f"Found {len(matches)} IPL matches")
+            for idx, match in enumerate(matches, 1):
+                logger.info(f"{idx}. {match.get('name')} (ID: {match.get('id')})")
+            return
+        else:
+            logger.warning("No IPL matches found")
+            return
+    
     # Setup authentication
     if not setup_authentication(force_refresh=args.auth, headless=args.headless):
         return
@@ -76,6 +95,12 @@ def main():
         logger.info("🎲 Auto-betting is ENABLED - sanctioned bets will be placed automatically")
     else:
         logger.info("Auto-betting is disabled (use --auto-bet to enable)")
+    
+    # Prefetch mode - just get market data and exit (no betting)
+    if args.prefetch_only and args.event_id:
+        logger.info(f"Running in prefetch-only mode for event {args.event_id}")
+        monitor.check_markets(args.event_id, args.match_name, prefetch_only=True)
+        return
     
     # Run the market monitor
     monitor.run(event_id=args.event_id, match_name=args.match_name)

@@ -138,7 +138,7 @@ class SimpleMarketMonitor:
             logger.error(f"Error finding current match: {e}")
             return None
     
-    def check_markets(self, event_id):
+    def check_markets(self, event_id, match_name=None, prefetch_only=False):
         """Check available markets for a given event."""
         try:
             logger.info(f"Checking markets for event: {event_id}")
@@ -160,7 +160,7 @@ class SimpleMarketMonitor:
             logger.info(f"Found {len(active_markets)} active markets")
             
             # Get match name for recording
-            match_name = event_data.get("name", "Unknown match")
+            match_name = match_name or event_data.get("name", "Unknown match")
             
             # Categorize markets for better display
             single_over_markets = []
@@ -180,6 +180,16 @@ class SimpleMarketMonitor:
                         single_over_markets.append(market)
                 else:
                     other_markets.append(market)
+            
+            # If prefetch_only, just save markets and exit
+            if prefetch_only:
+                # Save market data for reference
+                os.makedirs("data", exist_ok=True)
+                with open(f"data/markets_{event_id}.json", "w") as f:
+                    json.dump(active_markets, f, indent=2)
+                    
+                logger.info(f"Markets saved to data/markets_{event_id}.json (prefetch only)")
+                return active_markets
             
             # Display markets by category
             logger.info("\n=== Single Over Markets (Sanctionable) ===")
