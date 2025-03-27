@@ -31,7 +31,7 @@ class BettingSanctionManager:
                     "settings": {
                         "first_overs_range": [1, 2, 3, 4, 5, 6],
                         "last_overs_range": [17, 18, 19, 20],
-                        "stake": 100,
+                        "stake": 200,
                         "active": True
                     },
                     "selected_bets": []  # This will store the selected bets from each run
@@ -43,7 +43,8 @@ class BettingSanctionManager:
                 return default_sanctions
         except Exception as e:
             logger.error(f"Error loading sanctioned bets: {e}")
-            return {"settings": {"first_overs_range": [1, 2, 3, 4, 5, 6], "last_overs_range": [17, 18, 19, 20], "stake": 100, "active": True}, "selected_bets": []}
+            return {"settings": {"first_overs_range": [1, 2, 3, 4, 5, 6], "last_overs_range": [17, 18, 19, 20], "stake": 200, "active": True}, "selected_bets": []}
+            
     
     def _extract_innings_details(self, market_name: str) -> Dict[str, Any]:
         """
@@ -106,7 +107,7 @@ class BettingSanctionManager:
         settings = self.sanctioned_bets.get("settings", {})
         first_overs_range = settings.get("first_overs_range", [1, 2, 3, 4, 5, 6])
         last_overs_range = settings.get("last_overs_range", [17, 18, 19, 20])
-        default_stake = settings.get("stake", 100)
+        default_stake = settings.get("stake", 200)
         is_active = settings.get("active", True)
         
         if not is_active:

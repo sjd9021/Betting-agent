@@ -103,7 +103,7 @@ def main():
         event_id=event_id,
         market_id=market.get('market_id'),
         market_line_id=market.get('market_line_id'),
-        stake=100,  # Betting amount
+        stake=200,  # Betting amount
         odds=float(selection.get('odds')),
         dry_run=True  # Always use dry run for testing!
     )
